@@ -1,6 +1,8 @@
 package pe.edu.cibertec.retrofitgitflow;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,20 +17,37 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textViewResult;
+   // private TextView textViewResult;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private List<Post> postList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textViewResult = findViewById(R.id.textViewResult);
-        callService();
+        //textViewResult = findViewById(R.id.textViewResult);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        postList =  
+        mAdapter = new UserAdapter(callService());
+        recyclerView.setAdapter(mAdapter);
+
+        //;
 
 
 
     }
+
+
+
 
     private void callService(){
         Retrofit retrofit = new Retrofit.Builder()
@@ -56,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         content += "Id: " + post.getId() + "\n";
                         content += "UserId: " + post.getUserId() + "\n";
                         content += "Title: " + post.getTitle() + "\n";
-                        content += "Body: " + post.getText() + "\n";
+                        content += "Body: " + post.getText() + "\n\n";
                         textViewResult.append(content);
                     }
 
